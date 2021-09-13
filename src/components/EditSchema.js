@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {createSchema, updateSchemas} from "../actions/schema";
 import {retrieveDataType} from "../actions/dataType";
 import SchemaService from "../services/schema.service";
+import SchemaColumnService from "../services/schemaColumns.service";
 
 const EditSchema = (props) => {
 
@@ -80,6 +81,7 @@ const EditSchema = (props) => {
 
     const handleUpdateSchema = () => {
         dispatch(updateSchemas(currentSchema.id, {
+            'id': currentSchema.id,
             'name': newName,
             'column_separator': newColumnSeparator,
             'string_character': newStringCharacter,
@@ -87,6 +89,7 @@ const EditSchema = (props) => {
         }))
             .then((res) => {
                 console.log(res)
+                props.history.push('')
             })
             .catch((e) => {
                 console.log(e)
@@ -172,7 +175,7 @@ const EditSchema = (props) => {
                         <div className="form-group col-2 mt-3">
                             <label htmlFor="columnName">Order</label>
                             <input type="text"
-                                   name="order"
+                                   name="id"
                                    value={index}
                                    onChange={(e) => handleChange(e, index)}
                                    className="form-control"
@@ -183,6 +186,7 @@ const EditSchema = (props) => {
                                 className="text-danger"
                                 onClick={() => {
                                     handleRemoveColumn(index)
+                                    SchemaColumnService.remove(column.id).then(r => console.log('Success' + r)).catch(e => console.log('Error' + e))
                                 }}>Delete</span>
                         </div>
                     </div>

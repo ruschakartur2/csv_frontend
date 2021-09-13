@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import {createDataSet, retrieveDataSets} from "../actions/dataSet";
 
-
 const DataSets = (props) => {
 
     const dataSets = useSelector(state => state.ds.items);
@@ -36,6 +35,7 @@ const DataSets = (props) => {
     }
     return (
         <div>
+
             <div className="title col-9 d-flex justify-content-between">
                 <h2>Data schemas</h2>
                 <div>Rows: <input className="ml-1 mr-2" type="text" size="3" value={rows} onChange={(e) => {
@@ -47,7 +47,13 @@ const DataSets = (props) => {
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Created</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Status<img
+                        src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/000000/external-refresh-basic-ui-elements-flatart-icons-outline-flatarticons.png"
+                        width={20}
+                        height={20}
+                        className='logo'
+                        onClick={(e)=>{dispatch(retrieveDataSets(props.match.params.id))}}
+                    /></th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
@@ -57,12 +63,12 @@ const DataSets = (props) => {
                         <th scope="row">{dataSet.id}</th>
                         <th scope="row">{dataSet.created}</th>
                         <td>
-                            <div
+                            <div type="submit"
                                 className={dataSet.status === 'READY' && ('badge badge-success') || dataSet.status === 'PROCESSING' && ('badge badge-dark')}>{dataSet.status}</div>
                         </td>
                         <td>
                             <div className="buttons">
-                                <a href={"http://localhost:8000/media/files/"+dataSet.filepath} download>Download</a>
+                                <a className={dataSet.filepath !== null ? ('') : ('disabled')} href={"http://localhost:8000/media/files/"+dataSet.filepath} disabled={true} download>Download</a>
                             </div>
                         </td>
                     </tr>

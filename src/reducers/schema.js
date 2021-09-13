@@ -1,4 +1,4 @@
-import {SCHEMA_CREATE, SCHEMA_RETRIEVE} from "../actions/types";
+import {SCHEMA_CREATE, SCHEMA_DELETE, SCHEMA_RETRIEVE} from "../actions/types";
 
 const initialState = {
     items: [],
@@ -16,7 +16,8 @@ function schemaReducer(state = initialState, action) {
                     ...action.payload
                 ]
             }
-
+        case SCHEMA_DELETE:
+            return state.items.filter(({id}) => id !== payload.id);
         case SCHEMA_CREATE:
             return {
                 ...state,
@@ -28,4 +29,5 @@ function schemaReducer(state = initialState, action) {
             return state;
     }
 }
+
 export default schemaReducer;

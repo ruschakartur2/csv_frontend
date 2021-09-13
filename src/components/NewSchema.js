@@ -2,17 +2,17 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {createSchema} from "../actions/schema";
 import {retrieveDataType} from "../actions/dataType";
+import SchemaColumnService from "../services/schemaColumns.service";
 
-const NewSchema = () => {
+const NewSchema = (props) => {
 
     const dispatch = useDispatch();
     const [columns, setColumns] = useState([{
         name: 'name',
         data_type: 'type',
-        id: 1,
     }])
     const dataTypes = useSelector(state => state.dt.items);
-
+    const user = useSelector(state=> state.auth.user);
     const [schemaName, setSchemaName] = useState('')
     const [schemaColumnSeparator, setSchemaColumnSeparator] = useState('Comma (,)')
     const [schemaStringCharacter, setSchemaStringCharacter] = useState('Double-quote ("")')
@@ -33,6 +33,7 @@ const NewSchema = () => {
         const columns_list = [...columns];
         columns_list.splice(index, 1)
         setColumns(columns_list)
+        SchemaColumnService.remove(index).then(r => console.log('Success')).catch(e => console.log('Error'))
     }
 
     const handleChange = (e, index) => {
@@ -59,10 +60,12 @@ const NewSchema = () => {
                 'name': schemaName,
                 'column_separator': schemaColumnSeparator,
                 'string_character': schemaStringCharacter,
-                'columns': columns
+                'columns': columns,
+                'author': user.id
             }))
                 .then((res) => {
                     console.log(res)
+                    props.history.push('')
                 })
                 .catch((e) => {
                     console.log(e)
@@ -139,7 +142,6 @@ const NewSchema = () => {
                         </div>
                         <div className="form-group col-2 mt-3">
                             <div className="d-flex">
-
                             </div>
                         </div>
                         <div className="form-group col-2 mt-3">
@@ -156,6 +158,8 @@ const NewSchema = () => {
                                 className="text-danger"
                                 onClick={() => {
                                     handleRemoveColumn(index)
+                                    SchemaColumnService.remove(column.id).then(r => console.log('Success' + r)).catch(e => console.log('Error' + e))
+
                                 }}>Delete</span>
                         </div>
                     </div>

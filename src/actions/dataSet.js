@@ -61,9 +61,10 @@ export const getProgress = (dataSetId) => async (dispatch) => {
             payload: {dataSetId: dataSetId, ...res.data}
         })
         if (!res.data.complete && !res.data?.progress?.pending) {
-            return setTimeout(() => {
-                dispatch(getProgress(dataSetId))
-            }, 5000);
+                setTimeout(()=>{
+                    return dispatch(getProgress(dataSetId))
+
+                },  4000)
         }
     } catch (err) {
         console.log(err)

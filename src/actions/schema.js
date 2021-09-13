@@ -36,9 +36,9 @@ export const updateSchemas = (id,data) => async (dispatch) => {
     }
 }
 
-export const retrieveSchemas = () => async (dispatch) => {
+export const retrieveSchemas = (author) => async (dispatch) => {
     try {
-        const res = await SchemaService.getAll();
+        const res = await SchemaService.getAll(author);
         dispatch({
             type: SCHEMA_RETRIEVE,
             payload: res.data,
@@ -62,5 +62,17 @@ export const retrieveSchema = (id) => async (dispatch) => {
 
     } catch (err) {
         console.log(err);
+    }
+}
+export const deleteSchema = (id) => async (dispatch) => {
+    try {
+        await SchemaService.remove(id);
+
+        dispatch({
+            type: SCHEMA_DELETE,
+            payload: {id},
+        });
+    } catch (err) {
+        console.log(err)
     }
 }
